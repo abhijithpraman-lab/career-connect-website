@@ -1,45 +1,20 @@
 from flask import Flask, render_template, request
+from database import init_db, load_jobs_from_db, load_job_from_db, add_application_to_db
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///career_connect.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-JOBS = [
-    {
-        "id": 1,
-        "title": "Data Analyst",
-        "location": "Bengaluru, India",
-        "salary": "Rs. 12,00,000"
-    },
-    {
-        "id": 2,
-        "title": "Backend Engineer",
-        "location": "Remote",
-        "salary": "Rs. 15,00,000"
-    },
-    {
-        "id": 3,
-        "title": "Frontend Engineer",
-        "location": "Delhi, India",
-        "salary": "Rs. 10,00,000"
-    },
-    {
-        "id": 4,
-        "title": "Data Scientist",
-        "location": "San Francisco, USA",
-        "salary": "$120,000"
-    }
-]
+init_db(app)
 
 @app.route("/")
 def home():
-    return render_template("home.html", jobs=JOBS)
+    jobs = load_jobs_from_db()
+    return render_template("home.html", jobs=jobs)
 
 @app.route("/job/<id>")
 def show_job(id):
-    job = None
-    for j in JOBS:
-        if str(j["id"]) == str(id):
-            job = j
-            break
+    job = load_job_from_db(id)
 
     if not job:
         return "Job Not Found", 404
@@ -48,16 +23,12 @@ def show_job(id):
 
 @app.route("/job/<id>/apply", methods=["POST"])
 def apply_to_job(id):
-    job = None
-    for j in JOBS:
-        if str(j["id"]) == str(id):
-            job = j
-            break
+    job = load_job_from_db(id)
 
     if not job:
         return "Job Not Found", 404
 
-    application = request.form
+    application = add_application_to_db(job.id, request.form)
 
     return render_template(
         "application_submitted.html",

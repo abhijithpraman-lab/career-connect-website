@@ -3,44 +3,89 @@
 {% block title %}Career Connect{% endblock %}
 
 {% block body %}
-<h1 class="text-center mt-4 mb-4">Career Connect</h1>
+<div class="container py-4">
+  <div class="text-center py-5 mb-4 bg-light rounded shadow-sm">
+    
+    <h1 class="display-3 fw-bold mb-3">Career Connect</h1>
+    <p class="lead text-muted mx-auto" style="max-width: 720px;">
+      Discover curated job openings, learn about each role, and submit your application
+      through a clean and professional careers website.
+    </p>
+    <a href="#jobs" class="btn btn-primary btn-lg mt-2">Explore Jobs</a>
+  </div>
 
-<div class="text-center">
   <img
-    class="img-fluid rounded shadow-sm"
-    src="{{ url_for('static', filename='hammer.png') }}"
-    alt="Hammer Image"
-    style="max-width: 900px; width: 100%; height: 350px; object-fit: cover;"
+    class="img-fluid rounded mx-auto d-block mb-4"
+    src="/static/hammer.png"
+    alt="Career banner"
+    style="max-height: 320px; width: 100%; object-fit: cover;"
   >
-</div>
 
-<h2 class="text-center mt-4">About Career Connect</h2>
+  <div class="text-center mb-5">
+    <h2>About Career Connect</h2>
+    <p class="lead text-muted mx-auto" style="max-width: 760px;">
+      Career Connect is a dynamic careers website built using Python, Flask, HTML,
+      Bootstrap, and Jinja templates. It helps users explore job openings, view job
+      details, and apply online easily.
+    </p>
+  </div>
 
-<p class="lead text-center mx-auto" style="max-width: 900px;">
-  Career Connect is a dynamic careers website built using Python, Flask,
-  HTML, Bootstrap, and Jinja templates. It displays job openings and allows
-  users to view job details and apply online.
-</p>
+  <div class="row text-center mb-5">
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Verified Openings</h5>
+          <p class="card-text text-muted">
+            Browse curated job opportunities across analytics, backend, frontend, and data roles.
+          </p>
+        </div>
+      </div>
+    </div>
 
-<h2 class="text-center mt-4">Job Openings</h2>
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Simple Applications</h5>
+          <p class="card-text text-muted">
+            Apply quickly with a clean application form and submit your profile in minutes.
+          </p>
+        </div>
+      </div>
+    </div>
 
-{% for job in jobs %}
-<div class="border-bottom row" style="margin-bottom:16px; padding-bottom:8px;">
-  <div class="col-9">
-    <h4 style="color:rgb(120,120,120); margin-bottom:4px;">
-      {{ job['title'] }}
-    </h4>
-    <div style="color:rgb(80,80,80);">
-      {{ job['location'] }}
+    <div class="col-md-4 mb-3">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Career Growth</h5>
+          <p class="card-text text-muted">
+            Discover opportunities that match your skills and help you move forward professionally.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="col-3">
-    <a href="/job/{{ job['id'] }}" class="btn btn-primary">Apply</a>
-  </div>
-</div>
-{% endfor %}
 
-<div class="text-center mt-4">
-  <button class="btn btn-primary btn-lg">Contact Us</button>
+  <h2 id="jobs" class="text-center mb-4">Job Openings</h2>
+
+  <div class="row">
+    {% for job in jobs %}
+    <div class="col-md-6 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h4 class="mb-2">{{ job.title }}</h4>
+          <p class="mb-1"><b>Location:</b> {{ job.location }}</p>
+          <p class="mb-3"><b>Salary:</b> {{ job.salary }}</p>
+          <a href="/job/{{ job.id }}" class="btn btn-primary">View Details</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="text-center mt-4 mb-5">
+    <a href="mailto:hello@careerconnect.com" class="btn btn-outline-primary btn-lg">
+      Contact Us
+    </a>
+  </div>
 </div>
 {% endblock %}

@@ -3,20 +3,57 @@
 {% block title %}Application Submitted{% endblock %}
 
 {% block body %}
-<h1 class="mt-4 text-success">Application Submitted</h1>
+<div class="container py-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <h1 class="text-success mb-3">Application Submitted</h1>
 
-<p>You have successfully applied for <b>{{ job['title'] }}</b>.</p>
+          <p class="mb-2">
+            You have successfully applied for <b>{{ job.title }}</b>.
+          </p>
+          <p class="text-muted mb-4">
+            Our team will review your application and contact you if your profile matches the role.
+          </p>
 
-<h3 class="mt-4">Submitted Details</h3>
+          <h3 class="mb-3">Submitted Details</h3>
 
-<ul class="list-group">
-  <li class="list-group-item"><b>Full Name:</b> {{ application['full_name'] }}</li>
-  <li class="list-group-item"><b>Email:</b> {{ application['email'] }}</li>
-  <li class="list-group-item"><b>LinkedIn URL:</b> {{ application['linkedin_url'] }}</li>
-  <li class="list-group-item"><b>Education:</b> {{ application['education'] }}</li>
-  <li class="list-group-item"><b>Work Experience:</b> {{ application['work_experience'] }}</li>
-  <li class="list-group-item"><b>Resume URL:</b> {{ application['resume_url'] }}</li>
-</ul>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <th style="width: 30%;">Full Name</th>
+                  <td>{{ application.full_name }}</td>
+                </tr>
+                <tr>
+                  <th>Email</th>
+                  <td>{{ application.email }}</td>
+                </tr>
+                <tr>
+                  <th>LinkedIn URL</th>
+                  <td>{{ application.linkedin_url or "Not provided" }}</td>
+                </tr>
+                <tr>
+                  <th>Education</th>
+                  <td>{{ application.education or "Not provided" }}</td>
+                </tr>
+                <tr>
+                  <th>Work Experience</th>
+                  <td>{{ application.work_experience or "Not provided" }}</td>
+                </tr>
+                <tr>
+                  <th>Resume URL</th>
+                  <td>{{ application.resume_url or "Not provided" }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-<a href="/" class="btn btn-secondary mt-4">Back to Home</a>
+          <a href="/" class="btn btn-secondary mt-3">Back to Home</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

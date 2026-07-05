@@ -1,61 +1,81 @@
 {% extends "base.html" %}
 
-{% block title %}{{ job['title'] }} - Career Connect{% endblock %}
+{% block title %}{{ job.title }} - Career Connect{% endblock %}
 
 {% block body %}
-<h1 class="mt-4 mb-2">{{ job['title'] }}</h1>
-<p class="lead">{{ job['location'] }}</p>
+<div class="container py-4">
+  <div class="row">
+    <div class="col-lg-8 mx-auto">
+      <div class="mb-4">
+        <h1 class="mb-2">{{ job.title }}</h1>
+        <p class="lead text-muted mb-1">{{ job.location }}</p>
+        <p><b>Salary:</b> {{ job.salary }}</p>
+      </div>
 
-<h3>Salary</h3>
-<p>{{ job['salary'] }}</p>
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h3>Responsibilities</h3>
+          <ul class="mb-0">
+            <li>Analyze business and operational data to generate actionable insights.</li>
+            <li>Prepare reports and dashboards for stakeholders and management teams.</li>
+            <li>Work with cross-functional teams to identify trends and performance gaps.</li>
+            <li>Support decision-making with structured data analysis and presentation.</li>
+          </ul>
+        </div>
+      </div>
 
-<h3>Responsibilities</h3>
-<ul>
-  <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-  <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</li>
-  <li>Duis aute irure dolor in reprehenderit in voluptate velit esse.</li>
-</ul>
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h3>Requirements</h3>
+          <ol class="mb-0">
+            <li>Bachelor's degree in a relevant field.</li>
+            <li>2+ years of relevant work experience.</li>
+            <li>Strong problem-solving and communication skills.</li>
+            <li>Experience with spreadsheets, SQL, or data tools is a plus.</li>
+          </ol>
+        </div>
+      </div>
 
-<h3>Requirements</h3>
-<ol>
-  <li>Bachelor's degree in a relevant field.</li>
-  <li>2+ years of relevant work experience.</li>
-  <li>Strong problem-solving and communication skills.</li>
-</ol>
+      <div class="card shadow-sm mb-5">
+        <div class="card-body">
+          <h3 class="mb-4">Submit Application</h3>
 
-<h3 class="mt-4">Submit Application</h3>
+          <form action="/job/{{ job.id }}/apply" method="post">
+            <div class="mb-3">
+              <label class="form-label">Full Name</label>
+              <input type="text" name="full_name" class="form-control" required>
+            </div>
 
-<form action="/job/{{ job['id'] }}/apply" method="post">
-  <div class="mb-2">
-    <label>Full Name</label>
-    <input type="text" name="full_name" class="form-control" required>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">LinkedIn URL</label>
+              <input type="text" name="linkedin_url" class="form-control">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Education</label>
+              <textarea name="education" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Work Experience</label>
+              <textarea name="work_experience" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Resume URL</label>
+              <input type="text" name="resume_url" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Application</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="mb-2">
-    <label>Email</label>
-    <input type="email" name="email" class="form-control" required>
-  </div>
-
-  <div class="mb-2">
-    <label>LinkedIn URL</label>
-    <input type="text" name="linkedin_url" class="form-control">
-  </div>
-
-  <div class="mb-2">
-    <label>Education</label>
-    <textarea name="education" class="form-control"></textarea>
-  </div>
-
-  <div class="mb-2">
-    <label>Work Experience</label>
-    <textarea name="work_experience" class="form-control"></textarea>
-  </div>
-
-  <div class="mb-2">
-    <label>Resume URL</label>
-    <input type="text" name="resume_url" class="form-control">
-  </div>
-
-  <button type="submit" class="btn btn-primary mt-3">Submit Application</button>
-</form>
+</div>
 {% endblock %}
