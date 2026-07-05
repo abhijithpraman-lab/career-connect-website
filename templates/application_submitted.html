@@ -22,35 +22,17 @@
           <div class="table-responsive">
             <table class="table table-bordered">
               <tbody>
-                <tr>
-                  <th style="width: 30%;">Full Name</th>
-                  <td>{{ application.full_name }}</td>
-                </tr>
-                <tr>
-                  <th>Email</th>
-                  <td>{{ application.email }}</td>
-                </tr>
-                <tr>
-                  <th>LinkedIn URL</th>
-                  <td>{{ application.linkedin_url or "Not provided" }}</td>
-                </tr>
-                <tr>
-                  <th>Education</th>
-                  <td>{{ application.education or "Not provided" }}</td>
-                </tr>
-                <tr>
-                  <th>Work Experience</th>
-                  <td>{{ application.work_experience or "Not provided" }}</td>
-                </tr>
-                <tr>
-                  <th>Resume URL</th>
-                  <td>{{ application.resume_url or "Not provided" }}</td>
-                </tr>
+                <tr><th style="width: 30%;">Full Name</th><td>{{ application.full_name }}</td></tr>
+                <tr><th>Email</th><td>{{ application.email }}</td></tr>
+                <tr><th>LinkedIn URL</th><td>{{ application.linkedin_url or "Not provided" }}</td></tr>
+                <tr><th>Education</th><td>{{ application.education or "Not provided" }}</td></tr>
+                <tr><th>Work Experience</th><td>{{ application.work_experience or "Not provided" }}</td></tr>
+                <tr><th>Resume URL</th><td>{{ application.resume_url or "Not provided" }}</td></tr>
               </tbody>
             </table>
           </div>
 
-          <a href="/" class="btn btn-secondary mt-3">Back to Home</a>
+          <a href="{{ url_for('home') }}" class="btn btn-secondary mt-3">Back to Home</a>
         </div>
       </div>
     </div>

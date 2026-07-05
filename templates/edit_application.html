@@ -1,53 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}{{ job.title }} - Career Connect{% endblock %}
+{% block title %}Edit Application{% endblock %}
 
 {% block body %}
-<div class="container py-4">
+<div class="container py-5">
   <div class="row">
     <div class="col-lg-8 mx-auto">
-      <div class="mb-4">
-        <h1 class="mb-2">{{ job.title }}</h1>
-        <p class="lead text-muted mb-1">{{ job.location }}</p>
-        <p><b>Salary:</b> {{ job.salary }}</p>
-      </div>
-
-      <div class="card shadow-sm mb-4">
+      <div class="card shadow-sm">
         <div class="card-body">
-          <h3>Responsibilities</h3>
-          <ul class="mb-0">
-            <li>Analyze business and operational data to generate actionable insights.</li>
-            <li>Prepare reports and dashboards for stakeholders and management teams.</li>
-            <li>Work with cross-functional teams to identify trends and performance gaps.</li>
-            <li>Support decision-making with structured data analysis and presentation.</li>
-          </ul>
-        </div>
-      </div>
+          <h1 class="mb-4">Edit Application</h1>
 
-      <div class="card shadow-sm mb-4">
-        <div class="card-body">
-          <h3>Requirements</h3>
-          <ol class="mb-0">
-            <li>Bachelor's degree in a relevant field.</li>
-            <li>2+ years of relevant work experience.</li>
-            <li>Strong problem-solving and communication skills.</li>
-            <li>Experience with spreadsheets, SQL, or data tools is a plus.</li>
-          </ol>
-        </div>
-      </div>
-
-      <div class="card shadow-sm mb-5">
-        <div class="card-body">
-          <h3 class="mb-4">Submit Application</h3>
-
-          <form action="{{ url_for('apply_to_job', id=job.id) }}" method="post" novalidate>
+          <form action="{{ url_for('update_application', id=application.id) }}" method="post" novalidate>
             <div class="mb-3">
               <label class="form-label">Full Name</label>
               <input
                 type="text"
                 name="full_name"
                 class="form-control {% if errors and errors.get('full_name') %}is-invalid{% endif %}"
-                value="{{ request.form.get('full_name', '') }}"
+                value="{{ request.form.get('full_name', application.full_name) }}"
                 required
               >
               {% if errors and errors.get('full_name') %}
@@ -61,7 +31,7 @@
                 type="email"
                 name="email"
                 class="form-control {% if errors and errors.get('email') %}is-invalid{% endif %}"
-                value="{{ request.form.get('email', '') }}"
+                value="{{ request.form.get('email', application.email) }}"
                 required
               >
               {% if errors and errors.get('email') %}
@@ -75,7 +45,7 @@
                 type="text"
                 name="linkedin_url"
                 class="form-control {% if errors and errors.get('linkedin_url') %}is-invalid{% endif %}"
-                value="{{ request.form.get('linkedin_url', '') }}"
+                value="{{ request.form.get('linkedin_url', application.linkedin_url or '') }}"
               >
               {% if errors and errors.get('linkedin_url') %}
                 <div class="invalid-feedback d-block">{{ errors['linkedin_url'][0] }}</div>
@@ -88,7 +58,7 @@
                 name="education"
                 class="form-control {% if errors and errors.get('education') %}is-invalid{% endif %}"
                 rows="3"
-              >{{ request.form.get('education', '') }}</textarea>
+              >{{ request.form.get('education', application.education or '') }}</textarea>
               {% if errors and errors.get('education') %}
                 <div class="invalid-feedback d-block">{{ errors['education'][0] }}</div>
               {% endif %}
@@ -100,7 +70,7 @@
                 name="work_experience"
                 class="form-control {% if errors and errors.get('work_experience') %}is-invalid{% endif %}"
                 rows="3"
-              >{{ request.form.get('work_experience', '') }}</textarea>
+              >{{ request.form.get('work_experience', application.work_experience or '') }}</textarea>
               {% if errors and errors.get('work_experience') %}
                 <div class="invalid-feedback d-block">{{ errors['work_experience'][0] }}</div>
               {% endif %}
@@ -112,14 +82,15 @@
                 type="text"
                 name="resume_url"
                 class="form-control {% if errors and errors.get('resume_url') %}is-invalid{% endif %}"
-                value="{{ request.form.get('resume_url', '') }}"
+                value="{{ request.form.get('resume_url', application.resume_url or '') }}"
               >
               {% if errors and errors.get('resume_url') %}
                 <div class="invalid-feedback d-block">{{ errors['resume_url'][0] }}</div>
               {% endif %}
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit Application</button>
+            <button type="submit" class="btn btn-success">Update Application</button>
+            <a href="{{ url_for('list_applications') }}" class="btn btn-secondary">Back</a>
           </form>
         </div>
       </div>

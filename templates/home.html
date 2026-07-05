@@ -4,68 +4,74 @@
 
 {% block body %}
 <div class="container py-4">
-  <div class="text-center py-5 mb-4 bg-light rounded shadow-sm">
+  <div class="p-5 mb-5 bg-light rounded-4 shadow-sm text-center">
     
-    <h1 class="display-3 fw-bold mb-3">Career Connect</h1>
-    <p class="lead text-muted mx-auto" style="max-width: 720px;">
-      Discover curated job openings, learn about each role, and submit your application
-      through a clean and professional careers website.
+    <h1 class="display-4 fw-bold mb-3">Find your next opportunity</h1>
+    <p class="lead text-muted mx-auto" style="max-width: 760px;">
+      Explore curated job openings, review role details, and submit applications through a clean Flask-based careers portal.
     </p>
     <a href="#jobs" class="btn btn-primary btn-lg mt-2">Explore Jobs</a>
   </div>
 
-  <img
-    class="img-fluid rounded mx-auto d-block mb-4"
-    src="/static/hammer.png"
-    alt="Career banner"
-    style="max-height: 320px; width: 100%; object-fit: cover;"
-  >
-
-  <div class="text-center mb-5">
-    <h2>About Career Connect</h2>
-    <p class="lead text-muted mx-auto" style="max-width: 760px;">
-      Career Connect is a dynamic careers website built using Python, Flask, HTML,
-      Bootstrap, and Jinja templates. It helps users explore job openings, view job
-      details, and apply online easily.
-    </p>
+  <div class="row align-items-center mb-5">
+    <div class="col-lg-6 mb-4 mb-lg-0">
+      <h2 class="fw-bold mb-3">About Career Connect</h2>
+      <p class="text-muted">
+        Career Connect is a job portal project built with Flask, SQLAlchemy, WTForms, Bootstrap, and Jinja templates.
+        It demonstrates routing, database integration, validation, CRUD operations, template inheritance, search, sort, and pagination.
+      </p>
+      <a href="{{ url_for('list_applications') }}" class="btn btn-outline-dark">View Applications</a>
+    </div>
+    <div class="col-lg-6">
+      <img
+        class="img-fluid rounded shadow-sm"
+        src="/static/hammer.png"
+        alt="Career banner"
+        style="width: 100%; max-height: 320px; object-fit: cover;"
+      >
+    </div>
   </div>
 
-  <div class="row text-center mb-5">
-    <div class="col-md-4 mb-3">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">Verified Openings</h5>
-          <p class="card-text text-muted">
-            Browse curated job opportunities across analytics, backend, frontend, and data roles.
-          </p>
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <h3 class="mb-3">Search and Sort Jobs</h3>
+      <form method="get" action="{{ url_for('home') }}">
+        <div class="row g-2">
+          <div class="col-md-6">
+            <input
+              type="text"
+              name="q"
+              class="form-control"
+              placeholder="Search by title or location"
+              value="{{ query }}"
+            >
+          </div>
+          <div class="col-md-4">
+            <select name="sort" class="form-select">
+              <option value="">Sort By</option>
+              <option value="title" {% if sort == 'title' %}selected{% endif %}>Title</option>
+              <option value="location" {% if sort == 'location' %}selected{% endif %}>Location</option>
+            </select>
+          </div>
+          <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-primary">Apply</button>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="col-md-4 mb-3">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">Simple Applications</h5>
-          <p class="card-text text-muted">
-            Apply quickly with a clean application form and submit your profile in minutes.
-          </p>
+        <div class="mt-2">
+          <a href="{{ url_for('home') }}" class="btn btn-outline-secondary btn-sm">Clear Filters</a>
         </div>
-      </div>
-    </div>
-
-    <div class="col-md-4 mb-3">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title">Career Growth</h5>
-          <p class="card-text text-muted">
-            Discover opportunities that match your skills and help you move forward professionally.
-          </p>
-        </div>
-      </div>
+      </form>
     </div>
   </div>
 
   <h2 id="jobs" class="text-center mb-4">Job Openings</h2>
+
+  {% if query %}
+    <p class="text-center text-muted mb-4">
+      Showing search results for: <b>{{ query }}</b>
+    </p>
+  {% endif %}
 
   <div class="row">
     {% for job in jobs %}
@@ -75,17 +81,53 @@
           <h4 class="mb-2">{{ job.title }}</h4>
           <p class="mb-1"><b>Location:</b> {{ job.location }}</p>
           <p class="mb-3"><b>Salary:</b> {{ job.salary }}</p>
-          <a href="/job/{{ job.id }}" class="btn btn-primary">View Details</a>
+          <a href="{{ url_for('show_job', id=job.id) }}" class="btn btn-primary">View Details</a>
         </div>
       </div>
     </div>
     {% endfor %}
   </div>
 
-  <div class="text-center mt-4 mb-5">
-    <a href="mailto:hello@careerconnect.com" class="btn btn-outline-primary btn-lg">
-      Contact Us
-    </a>
-  </div>
+  {% if not jobs %}
+    <div class="alert alert-warning text-center">
+      No jobs found matching your filters.
+    </div>
+  {% endif %}
+
+  {% if pagination.pages > 1 %}
+  <nav aria-label="Jobs pagination" class="mt-4">
+    <ul class="pagination justify-content-center">
+      {% if pagination.has_prev %}
+      <li class="page-item">
+        <a class="page-link" href="{{ url_for('home', page=pagination.prev_num, q=query, sort=sort) }}">Previous</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">Previous</span></li>
+      {% endif %}
+
+      {% for p in pagination.iter_pages() %}
+        {% if p %}
+          {% if p == pagination.page %}
+          <li class="page-item active"><span class="page-link">{{ p }}</span></li>
+          {% else %}
+          <li class="page-item">
+            <a class="page-link" href="{{ url_for('home', page=p, q=query, sort=sort) }}">{{ p }}</a>
+          </li>
+          {% endif %}
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">…</span></li>
+        {% endif %}
+      {% endfor %}
+
+      {% if pagination.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="{{ url_for('home', page=pagination.next_num, q=query, sort=sort) }}">Next</a>
+      </li>
+      {% else %}
+      <li class="page-item disabled"><span class="page-link">Next</span></li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
 </div>
 {% endblock %}
